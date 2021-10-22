@@ -1,3 +1,4 @@
+import html2canvas from 'html2canvas';
 import { useState } from 'react';
 import './App.css';
 
@@ -19,6 +20,18 @@ function App() {
     setImagen(e.target.value);
   }
 
+  const onClickExportar = function (e) {
+    html2canvas(document.querySelector('#meme')).then(canvas => {
+      const img = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = 'meme.png';
+      link.href = img;
+      link.click();
+    });
+  }
+
+
+
   return (
     <div className="App">
       <h1>Generador de Memes</h1>
@@ -34,13 +47,15 @@ function App() {
         </select>
         <input onChange={onChangeLinea1} type="text" placeholder="Linea 1"></input>
         <input onChange={onChangeLinea2} type="text" placeholder="Linea 2"></input>
-        <button>Exportar</button>
+        <button onClick={onClickExportar}>Exportar</button>
       </div>
 
-      <div className="meme">
-        <span>{linea1}</span>
-        <span>{linea2}</span>
-        <img src={"images/" + imagen + ".jpg"} />
+      <div className="meme" id="meme">
+        <div className="meme__texto">
+          <span>{linea1}</span>
+          <span>{linea2}</span>
+        </div>
+        <img src={"images/" + imagen + ".jpg"} alt="meme" />
       </div>
     </div>
   );
